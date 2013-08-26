@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<overlay id="leapStatusBarOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/javascript"
+          src="chrome://leap/content/util.js"/>
+  <script type="application/javascript"
+          src="chrome://leap/content/serverConfig.js"/>
+  <script type="application/javascript"
+          src="chrome://leap/content/statusBar.js"/>
+  <statusbar id="status-bar">
+    <statusbarpanel id="leap-status-bar"
+                    label="LEAP"
+                    onclick="handleStatusBarClick();" />
+  </statusbar>
+</overlay>
