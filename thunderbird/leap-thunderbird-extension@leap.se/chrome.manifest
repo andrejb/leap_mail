@@ -2,3 +2,4 @@ content leap                    chrome/content/
 skin    leap    classic/1.0     chrome/skin/
 locale  leap    en-US           chrome/locale/en-US/
 overlay chrome://messenger/content/messenger.xul chrome://leap/content/statusBar.xul
+overlay chrome://messenger/content/am-offline.xul chrome://leap/content/preventCaching.xul

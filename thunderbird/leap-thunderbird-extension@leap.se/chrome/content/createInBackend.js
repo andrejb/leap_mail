@@ -151,6 +151,7 @@ function createAccountInBackend(config)
 
   verifyLocalFoldersAccount(accountManager);
   setFolders(identity, inServer);
+  doNotCache(inServer);
 
   // save
   accountManager.saveAccountInfo();
@@ -186,6 +187,25 @@ function setFolders(identity, server)
   identity.fccFolderPickerMode = 0;
   identity.draftsFolderPickerMode = 0;
   identity.tmplFolderPickerMode = 0;
+}
+
+function doNotCache(inServer)
+{
+  inServerQI = inServer.QueryInterface(
+    Components.interfaces.nsIImapIncomingServer);
+  // make sure account is marked to now download
+  inServerQI.offlineDownload = false;
+  var allFolders = Components.classes["@mozilla.org/supports-array;1"]
+                             .createInstance(Components.interfaces.nsISupportsArray);
+  inServer.rootFolder.ListDescendents(allFolders);
+  var numFolders = allFolders.Count();
+  var folder;
+  for (var folderIndex = 0; folderIndex < numFolders; folderIndex++)
+  {
+    folder = allFolders.QueryElementAt(folderIndex,
+                                       Components.interfaces.nsIMsgFolder);
+    folder.clearFlag(Components.interfaces.nsMsgFolderFlags.Offline);
+  }
 }
 
 function rememberPassword(server, password)
