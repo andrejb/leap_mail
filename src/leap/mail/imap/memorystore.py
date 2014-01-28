@@ -105,6 +105,7 @@ class MemoryStore(object):
 
         # Internal Storage: messages
         self._msg_store = {}
+        self._sizes = {}
 
         # Internal Storage: payload-hash
         """
@@ -335,6 +336,9 @@ class MemoryStore(object):
         #print "after adding: "
         #import pprint; pprint.pprint(self._msg_store[key])
 
+        # update memory store size
+        self._sizes[key] = size(self._msg_store[key])
+
     def get_docid_for_fdoc(self, mbox, uid):
         """
         Get Soledad document id for the flags-doc for a given mbox and uid.
@@ -378,6 +382,8 @@ class MemoryStore(object):
             self._new.discard(key)
             self._dirty.discard(key)
             self._msg_store.pop(key, None)
+            if key in self._sizes:
+                del self._sizes[key]
         except Exception as exc:
             logger.exception(exc)
 
@@ -777,4 +783,4 @@ class MemoryStore(object):
         Return the size of the internal storage.
         Use for calculating the limit beyond which we should flush the store.
         """
-        return size.get_size(self._msg_store)
+        return reduce(lambda x, y: x + y, self._sizes, 0)
